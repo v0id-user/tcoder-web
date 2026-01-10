@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { TcoderClient, type JobStatus } from "tcoder-client";
 import { Effect } from "effect";
+import { Button } from "./Button";
+import { VideoPreview } from "./VideoPreview";
+import { VideoVariations } from "./VideoVariations";
+import { JobStatusDisplay } from "./JobStatusDisplay";
+import { FileSelector } from "./FileSelector";
 
 interface UploadButtonProps {
   baseUrl?: string;
@@ -59,10 +64,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
     };
   }, [jobId, polling, baseUrl]);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
+  const handleFileSelect = (file: File) => {
     // Validate video file type
     if (!file.type.startsWith("video/")) {
       setError("Please select a video file");
@@ -109,7 +111,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
     }
   };
 
-  const handleCancel = () => {
+  const handleReset = () => {
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
@@ -121,164 +123,52 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
     setPolling(false);
   };
 
-  const handleUploadAnother = () => {
-    handleCancel();
-  };
-
-  // Show variations when job is completed
+  // Completed state - show variations
   if (jobStatus?.status === "completed" && jobStatus.outputs) {
     return (
       <div className="flex flex-col items-center gap-6 w-full max-w-4xl">
         <p className="text-[0.70rem] font-mono text-gray-600 uppercase tracking-wide">
           transcoding complete
         </p>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {jobStatus.outputs.map((output) => {
-            const videoSrc = output.cdnUrl ?? output.url;
-            return (
-              <div key={output.quality} className="flex flex-col gap-2">
-                <p className="text-[0.65rem] font-mono text-gray-500 uppercase tracking-wider">
-                  {output.quality}
-                </p>
-                <video
-                  src={videoSrc}
-                  controls
-                  className="w-full aspect-video bg-black border border-gray-200"
-                />
-              </div>
-            );
-          })}
-        </div>
-
-        <button
-          onClick={handleUploadAnother}
-          className="
-            px-3
-            py-1.5
-            border
-            border-gray-300
-            bg-white
-            text-gray-700
-            font-mono
-            text-[0.70rem]
-            tracking-wide
-            transition-opacity
-            hover:opacity-60
-            cursor-pointer
-          "
-        >
-          upload another
-        </button>
+        <VideoVariations outputs={jobStatus.outputs} />
+        <Button onClick={handleReset}>upload another</Button>
       </div>
     );
   }
 
-  // Show error state for failed jobs
+  // Failed state
   if (jobStatus?.status === "failed") {
     return (
       <div className="flex flex-col items-center gap-4">
         <p className="text-[0.65rem] font-mono text-red-600 opacity-60">
           {jobStatus.error || "Transcoding failed"}
         </p>
-        <button
-          onClick={handleUploadAnother}
-          className="
-            px-3
-            py-1.5
-            border
-            border-gray-300
-            bg-white
-            text-gray-700
-            font-mono
-            text-[0.70rem]
-            tracking-wide
-            transition-opacity
-            hover:opacity-60
-            cursor-pointer
-          "
-        >
-          try again
-        </button>
+        <Button onClick={handleReset}>try again</Button>
       </div>
     );
   }
 
-  // Show polling state
-  if (polling && jobStatus) {
+  // Processing state - show status with details
+  if (polling && jobStatus && jobId) {
     return (
       <div className="flex flex-col items-center gap-4">
-        {previewUrl && (
-          <video
-            src={previewUrl}
-            className="w-full max-w-md aspect-video bg-black border border-gray-200"
-            muted
-          />
-        )}
-        <p className="text-[0.70rem] font-mono text-gray-500 animate-pulse">
-          {jobStatus.status === "uploading" && "uploading..."}
-          {jobStatus.status === "queued" && "queued..."}
-          {jobStatus.status === "pending" && "pending..."}
-          {jobStatus.status === "running" && "transcoding..."}
-        </p>
-        <p className="text-[0.60rem] font-mono text-gray-400 opacity-50">
-          {jobId}
-        </p>
+        {previewUrl && <VideoPreview src={previewUrl} muted />}
+        <JobStatusDisplay status={jobStatus} jobId={jobId} />
       </div>
     );
   }
 
-  // Show video preview with confirm/cancel buttons
+  // Preview state - file selected, ready to upload
   if (selectedFile && previewUrl && !uploading && !jobId) {
     return (
       <div className="flex flex-col items-center gap-4">
-        <video
-          src={previewUrl}
-          controls
-          className="w-full max-w-md aspect-video bg-black border border-gray-200"
-        />
+        <VideoPreview src={previewUrl} controls />
         <p className="text-[0.60rem] font-mono text-gray-400 truncate max-w-md">
           {selectedFile.name}
         </p>
         <div className="flex gap-3">
-          <button
-            onClick={handleCancel}
-            className="
-              px-3
-              py-1.5
-              border
-              border-gray-300
-              bg-white
-              text-gray-700
-              font-mono
-              text-[0.70rem]
-              tracking-wide
-              transition-opacity
-              hover:opacity-60
-              cursor-pointer
-            "
-          >
-            cancel
-          </button>
-          <button
-            onClick={handleConfirmUpload}
-            className="
-              px-3
-              py-1.5
-              border
-              border-gray-300
-              bg-white
-              text-gray-700
-              font-mono
-              text-[0.70rem]
-              tracking-wide
-              transition-opacity
-              hover:opacity-60
-              cursor-pointer
-            "
-          >
-            confirm upload
-          </button>
+          <Button onClick={handleReset}>cancel</Button>
+          <Button onClick={handleConfirmUpload}>confirm upload</Button>
         </div>
         {error && (
           <p className="text-[0.65em] font-mono text-red-600 opacity-60">
@@ -289,58 +179,18 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
     );
   }
 
-  // Show uploading state
+  // Uploading state
   if (uploading) {
     return (
       <div className="flex flex-col items-center gap-4">
-        {previewUrl && (
-          <video
-            src={previewUrl}
-            className="w-full max-w-md aspect-video bg-black border border-gray-200"
-            muted
-          />
-        )}
+        {previewUrl && <VideoPreview src={previewUrl} muted />}
         <p className="text-[0.70rem] font-mono text-gray-500 animate-pulse">
-          uploading...
+          uploading to storage...
         </p>
       </div>
     );
   }
 
   // Initial state - file selection
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <label className="cursor-pointer">
-        <input
-          type="file"
-          accept="video/*"
-          onChange={handleFileSelect}
-          disabled={uploading}
-          className="hidden"
-        />
-        <div
-          className="
-            px-3
-            py-1.5
-            border
-            border-gray-300
-            bg-white
-            text-gray-700
-            font-mono
-            text-[0.70rem]
-            tracking-wide
-            transition-opacity
-            hover:opacity-60
-          "
-        >
-          upload
-        </div>
-      </label>
-      {error && (
-        <p className="text-[0.65em] font-mono text-red-600 opacity-60">
-          {error}
-        </p>
-      )}
-    </div>
-  );
+  return <FileSelector onFileSelect={handleFileSelect} error={error} />;
 }
