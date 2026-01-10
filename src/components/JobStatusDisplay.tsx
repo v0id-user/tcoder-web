@@ -33,9 +33,9 @@ const PRESET_INFO: Record<string, string> = {
 
 // Supported video qualities from tcoder-client
 const SUPPORTED_QUALITIES: VideoQuality[] = [
-  "480p",
+  "144p",
+  "360p",
   "720p",
-  "1080p",
 ];
 
 export function JobStatusDisplay({ status, jobId }: JobStatusDisplayProps) {

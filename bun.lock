@@ -18,7 +18,7 @@
         "react": "^19.2.3",
         "react-dom": "^19.2.3",
         "tailwindcss": "^4.1.18",
-        "tcoder-client": "^0.1.1",
+        "tcoder-client": "^0.1.2",
         "vite-tsconfig-paths": "^5.1.4",
       },
       "devDependencies": {
@@ -26,7 +26,7 @@
         "@testing-library/dom": "^10.4.1",
         "@testing-library/react": "^16.3.1",
         "@types/node": "^25.0.5",
-        "@types/react": "^19.2.7",
+        "@types/react": "^19.2.8",
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^5.1.2",
         "jsdom": "^27.4.0",
@@ -779,7 +779,7 @@
 
     "tapable": ["tapable@2.3.0", "", {}, "sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg=="],
 
-    "tcoder-client": ["tcoder-client@0.1.2", "", { "dependencies": { "effect": "^3.19.13", "hono": "^4.11.2" }, "peerDependencies": { "typescript": "^5" } }, "sha512-J3kxGjcBKnJil3xPaSIvuyygdvriesIw6Mq7EY6FSS/MPN1sPQzEA2SMX70vw38gOSks/WPJrl8pwShuWBQKYw=="],
+    "tcoder-client": ["tcoder-client@0.1.3", "", { "dependencies": { "effect": "^3.19.13", "hono": "^4.11.2" }, "peerDependencies": { "typescript": "^5" } }, "sha512-YJTtlcnHgD3IAiIA67QnwxPF00OjVvwdi91wxnC1Ap+zPu0zIg2sfh0aYfrXh415OPxX3lEYrnFElKnGpnYkbA=="],
 
     "tiny-invariant": ["tiny-invariant@1.3.3", "", {}, "sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg=="],
 

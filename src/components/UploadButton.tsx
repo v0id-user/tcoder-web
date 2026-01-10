@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TcoderClient, type JobStatus } from "tcoder-client";
+import { TcoderClient, type JobStatus, type VideoQuality } from "tcoder-client";
 import { Effect } from "effect";
 import { Button } from "./Button";
 import { VideoPreview } from "./VideoPreview";
@@ -7,6 +7,7 @@ import { VideoVariations } from "./VideoVariations";
 import { JobStatusDisplay } from "./JobStatusDisplay";
 import { FileSelector } from "./FileSelector";
 import { PresetSelector, type Preset } from "./PresetSelector";
+import { QualitySelector } from "./QualitySelector";
 
 interface UploadButtonProps {
   baseUrl?: string;
@@ -19,6 +20,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
   
   // Upload options state
   const [selectedPreset, setSelectedPreset] = useState<Preset>("default");
+  const [selectedQualities, setSelectedQualities] = useState<VideoQuality[]>(["720p"]);
   
   // Upload state
   const [uploading, setUploading] = useState(false);
@@ -103,6 +105,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
           filename: selectedFile.name,
           contentType: selectedFile.type || "video/mp4",
           preset: selectedPreset,
+          outputQualities: selectedQualities.length > 0 ? selectedQualities : undefined,
         })
       );
 
@@ -122,6 +125,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
     setSelectedFile(null);
     setPreviewUrl(null);
     setSelectedPreset("default");
+    setSelectedQualities(["720p"]);
     setError(null);
     setJobId(null);
     setJobStatus(null);
@@ -172,9 +176,12 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
           {selectedFile.name}
         </p>
         <PresetSelector value={selectedPreset} onChange={setSelectedPreset} />
+        <QualitySelector value={selectedQualities} onChange={setSelectedQualities} />
         <div className="flex gap-3">
           <Button onClick={handleReset}>cancel</Button>
-          <Button onClick={handleConfirmUpload}>confirm upload</Button>
+          <Button onClick={handleConfirmUpload} disabled={selectedQualities.length === 0}>
+            confirm upload
+          </Button>
         </div>
         {error && (
           <p className="text-[0.65em] font-mono text-red-600 opacity-60">
