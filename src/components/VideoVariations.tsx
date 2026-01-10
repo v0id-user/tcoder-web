@@ -1,7 +1,7 @@
-import type { JobStatus } from "tcoder-client";
+import type { JobOutput } from "tcoder-client";
 
 interface VideoVariationsProps {
-  outputs: NonNullable<JobStatus["outputs"]>;
+  outputs: JobOutput[];
 }
 
 export function VideoVariations({ outputs }: VideoVariationsProps) {

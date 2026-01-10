@@ -1,4 +1,4 @@
-import type { JobStatus } from "tcoder-client";
+import type { JobStatus, VideoQuality } from "tcoder-client";
 
 interface JobStatusDisplayProps {
   status: JobStatus;
@@ -30,6 +30,13 @@ const PRESET_INFO: Record<string, string> = {
   hls: "HLS streaming format",
   "hls-adaptive": "Adaptive bitrate HLS",
 };
+
+// Supported video qualities from tcoder-client
+const SUPPORTED_QUALITIES: VideoQuality[] = [
+  "480p",
+  "720p",
+  "1080p",
+];
 
 export function JobStatusDisplay({ status, jobId }: JobStatusDisplayProps) {
   const info = STATUS_INFO[status.status] ?? {
@@ -86,7 +93,7 @@ export function JobStatusDisplay({ status, jobId }: JobStatusDisplayProps) {
         )}
       </div>
 
-      {/* Available presets info */}
+      {/* Available presets */}
       <div className="flex flex-col gap-1 mt-1">
         <p className="text-[0.55rem] font-mono text-gray-400 uppercase">
           Available presets
@@ -104,6 +111,23 @@ export function JobStatusDisplay({ status, jobId }: JobStatusDisplayProps) {
               `}
             >
               {preset}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Supported qualities */}
+      <div className="flex flex-col gap-1 mt-1">
+        <p className="text-[0.55rem] font-mono text-gray-400 uppercase">
+          Supported qualities
+        </p>
+        <div className="flex flex-wrap gap-1 justify-center">
+          {SUPPORTED_QUALITIES.map((quality) => (
+            <span
+              key={quality}
+              className="text-[0.55rem] font-mono px-1.5 py-0.5 rounded bg-gray-50 text-gray-400"
+            >
+              {quality}
             </span>
           ))}
         </div>
