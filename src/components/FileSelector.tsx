@@ -13,7 +13,43 @@ export function FileSelector({ onFileSelect, disabled, error }: FileSelectorProp
   };
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-4">
+      {/* Disclaimer */}
+      <div className="flex flex-col items-center gap-2 max-w-sm text-center">
+        <p className="text-[0.65rem] font-mono text-red-500 uppercase tracking-wide">
+          Do not upload sensitive videos
+        </p>
+        <p className="text-[0.55rem] font-mono text-gray-400">
+          This is a demo service. For testing, use{" "}
+          <a
+            href="https://peach.blender.org/download/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-gray-600"
+          >
+            Big Buck Bunny
+          </a>
+          ,{" "}
+          <a
+            href="https://durian.blender.org/download/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-gray-600"
+          >
+            Sintel
+          </a>
+          , or{" "}
+          <a
+            href="https://mango.blender.org/download/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-gray-600"
+          >
+            Tears of Steel
+          </a>
+        </p>
+      </div>
+
       <label className="cursor-pointer">
         <input
           type="file"
