@@ -6,6 +6,7 @@ import { VideoPreview } from "./VideoPreview";
 import { VideoVariations } from "./VideoVariations";
 import { JobStatusDisplay } from "./JobStatusDisplay";
 import { FileSelector } from "./FileSelector";
+import { PresetSelector, type Preset } from "./PresetSelector";
 
 interface UploadButtonProps {
   baseUrl?: string;
@@ -15,6 +16,9 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
   // File selection state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  
+  // Upload options state
+  const [selectedPreset, setSelectedPreset] = useState<Preset>("default");
   
   // Upload state
   const [uploading, setUploading] = useState(false);
@@ -98,7 +102,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
         client.upload(blob, {
           filename: selectedFile.name,
           contentType: selectedFile.type || "video/mp4",
-          preset: "default",
+          preset: selectedPreset,
         })
       );
 
@@ -117,6 +121,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
     }
     setSelectedFile(null);
     setPreviewUrl(null);
+    setSelectedPreset("default");
     setError(null);
     setJobId(null);
     setJobStatus(null);
@@ -166,6 +171,7 @@ export function UploadButton({ baseUrl = "http://localhost:8787" }: UploadButton
         <p className="text-[0.60rem] font-mono text-gray-400 truncate max-w-md">
           {selectedFile.name}
         </p>
+        <PresetSelector value={selectedPreset} onChange={setSelectedPreset} />
         <div className="flex gap-3">
           <Button onClick={handleReset}>cancel</Button>
           <Button onClick={handleConfirmUpload}>confirm upload</Button>
