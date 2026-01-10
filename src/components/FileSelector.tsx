@@ -17,7 +17,10 @@ export function FileSelector({ onFileSelect, disabled, error }: FileSelectorProp
       {/* Disclaimer */}
       <div className="flex flex-col items-center gap-2 max-w-sm text-center">
         <p className="text-[0.65rem] font-mono text-red-500 uppercase tracking-wide">
-          Do not upload sensitive videos
+          Do not upload private or sensitive videos
+        </p>
+        <p className="text-[0.55rem] font-mono text-red-400 opacity-70">
+          请勿上传私人或敏感视频 · No subas videos privados o sensibles · Ne téléchargez pas de vidéos privées ou sensibles · لا ترفع مقاطع فيديو خاصة أو حساسة
         </p>
         <p className="text-[0.55rem] font-mono text-gray-400">
           This is a demo service. For testing, use{" "}
