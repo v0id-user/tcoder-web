@@ -51,6 +51,28 @@ export function FileSelector({ onFileSelect, disabled, error }: FileSelectorProp
             Tears of Steel
           </a>
         </p>
+        <div className="flex flex-col gap-1 mt-2 pt-2 border-t border-gray-200">
+          <p className="text-[0.55rem] font-mono text-gray-400">
+            Learn more:{" "}
+            <a
+              href="https://v0id-user.mataroa.blog/blog/i-tried-to-understand-how-large-scale-video-pipelines-work-so-i-built-a-serverless-transcoding-system-cloudflare-flyio-redis/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-gray-600"
+            >
+              blog post
+            </a>
+            {" · "}
+            <a
+              href="https://github.com/v0id-user/tcoder"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-gray-600"
+            >
+              repository
+            </a>
+          </p>
+        </div>
       </div>
 
       <label className="cursor-pointer">
