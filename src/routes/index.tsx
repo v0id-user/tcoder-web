@@ -27,7 +27,7 @@ function App() {
           Tcoder Web Client
         </h1>
         <div className="pt-40" />
-        <UploadButton />
+        <UploadButton baseUrl="https://tcoder.cloudflare-c49.workers.dev/" />
         <div className="flex-1" />
         <div className="h-40" />
       </main>
