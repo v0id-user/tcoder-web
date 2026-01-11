@@ -51,6 +51,9 @@ export function FileSelector({ onFileSelect, disabled, error }: FileSelectorProp
             Tears of Steel
           </a>
         </p>
+        <p className="text-[0.55rem] font-mono text-yellow-600 opacity-80">
+          Videos longer than 1 minute or larger than 10MB are likely to not be processed due to small machine size for this experiment.
+        </p>
         <div className="flex flex-col gap-1 mt-2 pt-2 border-t border-gray-200">
           <p className="text-[0.55rem] font-mono text-gray-400">
             Learn more:{" "}
